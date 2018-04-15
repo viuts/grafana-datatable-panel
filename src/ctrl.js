@@ -1,4 +1,6 @@
-import { MetricsPanelCtrl } from 'app/plugins/sdk';
+import {
+  MetricsPanelCtrl
+} from 'app/plugins/sdk';
 import $ from 'jquery';
 import angular from 'angular';
 import kbn from 'app/core/utils/kbn';
@@ -59,19 +61,20 @@ import {
   transformers
 } from './transformers';
 
-import { DatatableRenderer } from './renderer';
+import {
+  DatatableRenderer
+} from './renderer';
 
 const panelDefaults = {
   targets: [{}],
   transform: 'timeseries_to_columns',
   rowsPerPage: 5,
   showHeader: true,
-  styles: [
-    {
+  styles: [{
       type: 'date',
       pattern: 'Time',
       dateFormat: 'YYYY-MM-DD HH:mm:ss',
-      },
+    },
     {
       unit: 'short',
       type: 'number',
@@ -80,12 +83,14 @@ const panelDefaults = {
       colorMode: null,
       pattern: '/.*/',
       thresholds: [],
-      }
-    ],
+    }
+  ],
   columns: [],
   scroll: false,
   scrollHeight: 'default',
   fontSize: '100%',
+  columnAliases: [],
+  columnWidthHints: [],
   sort: {
     col: 0,
     desc: true
@@ -93,7 +98,7 @@ const panelDefaults = {
   datatableTheme: 'basic_theme',
   themeOptions: {
     light: './css/datatable-light.css',
-    dark:  './css/datatable-dark.css'
+    dark: './css/datatable-dark.css'
   },
   rowNumbersEnabled: false,
   infoEnabled: true,
@@ -106,8 +111,7 @@ const panelDefaults = {
   stripedRowsEnabled: true,
   lengthChangeEnabled: true,
   datatablePagingType: 'simple_numbers',
-  pagingTypes: [
-    {
+  pagingTypes: [{
       text: 'Page number buttons only',
       value: 'numbers',
     },
@@ -132,8 +136,7 @@ const panelDefaults = {
       value: 'first_last_numbers'
     }
   ],
-  themes: [
-    {
+  themes: [{
       value: 'basic_theme',
       text: 'Basic',
       disabled: false,
@@ -172,8 +175,7 @@ export class DatatablePanelCtrl extends MetricsPanelCtrl {
 
     this.addColumnSegment = uiSegmentSrv.newPlusButton();
     this.fontSizes = ['80%', '90%', '100%', '110%', '120%', '130%', '150%', '160%', '180%', '200%', '220%', '250%'];
-    this.colorModes = [
-      {
+    this.colorModes = [{
         text: 'Disabled',
         value: null
       },
@@ -194,8 +196,7 @@ export class DatatablePanelCtrl extends MetricsPanelCtrl {
         value: 'rowcolumn'
       },
     ];
-    this.columnTypes = [
-      {
+    this.columnTypes = [{
         text: 'Number',
         value: 'number'
       },
@@ -213,8 +214,7 @@ export class DatatablePanelCtrl extends MetricsPanelCtrl {
       }
     ];
     this.unitFormats = kbn.getUnitFormats();
-    this.dateFormats = [
-      {
+    this.dateFormats = [{
         text: 'YYYY-MM-DD HH:mm:ss',
         value: 'YYYY-MM-DD HH:mm:ss'
       },
@@ -246,19 +246,19 @@ export class DatatablePanelCtrl extends MetricsPanelCtrl {
     _.defaults(this.panel, panelDefaults);
 
     System.config({
-        paths: {
-            "datatables.net": this.getPanelPath() + "libs/datatables.net/js/jquery.dataTables.min",
-            "datatables.net-bs" : this.getPanelPath() + "libs/datatables.net-bs/js/dataTables.bootstrap.min",
-            "datatables.net-jqui" : this.getPanelPath() + "libs/datatables.net-jqui/js/dataTables.jqueryui.min",
-            "datatables.net-zf" : this.getPanelPath() + "libs/datatables.net-zf/js/dataTables.foundation.min",
-        }
+      paths: {
+        "datatables.net": this.getPanelPath() + "libs/datatables.net/js/jquery.dataTables.min",
+        "datatables.net-bs": this.getPanelPath() + "libs/datatables.net-bs/js/dataTables.bootstrap.min",
+        "datatables.net-jqui": this.getPanelPath() + "libs/datatables.net-jqui/js/dataTables.jqueryui.min",
+        "datatables.net-zf": this.getPanelPath() + "libs/datatables.net-zf/js/dataTables.foundation.min",
+      }
     });
 
     // basic datatables theme
     // alternative themes are disabled since they affect all datatable panels on same page currently
     switch (this.panel.datatableTheme) {
       case 'basic_theme':
-        System.import(this.getPanelPath() +  'libs/datatables.net-dt/css/jquery.dataTables.min.css!');
+        System.import(this.getPanelPath() + 'libs/datatables.net-dt/css/jquery.dataTables.min.css!');
         if (grafanaBootData.user.lightTheme) {
           System.import(this.getPanelPath() + this.panel.themeOptions.light + '!css');
         } else {
@@ -279,12 +279,12 @@ export class DatatablePanelCtrl extends MetricsPanelCtrl {
         System.import(this.getPanelPath() + 'libs/datatables.net-zf/css/dataTables.foundation.min.css!');
         break;
       case 'themeroller_theme':
-        System.import(this.getPanelPath() +  'libs/datatables.net-jqui/js/dataTables.jqueryui.min.js');
-        System.import(this.getPanelPath() +  'libs/datatables.net-jqui/css/dataTables.jqueryui.min.css!');
-        System.import(this.getPanelPath() +  'css/jquery-ui-smoothness.css!');
+        System.import(this.getPanelPath() + 'libs/datatables.net-jqui/js/dataTables.jqueryui.min.js');
+        System.import(this.getPanelPath() + 'libs/datatables.net-jqui/css/dataTables.jqueryui.min.css!');
+        System.import(this.getPanelPath() + 'css/jquery-ui-smoothness.css!');
         break;
-    default:
-        System.import(this.getPanelPath() +  'libs/datatables.net-dt/css/jquery.dataTables.min.css!');
+      default:
+        System.import(this.getPanelPath() + 'libs/datatables.net-dt/css/jquery.dataTables.min.css!');
         if (grafanaBootData.user.lightTheme) {
           System.import(this.getPanelPath() + this.panel.themeOptions.light + '!css');
         } else {
@@ -302,11 +302,11 @@ export class DatatablePanelCtrl extends MetricsPanelCtrl {
   }
 
   onInitPanelActions(actions) {
-      actions.push({
-        text: 'Export CSV',
-        click: 'ctrl.exportCsv()'
-      });
-    }
+    actions.push({
+      text: 'Export CSV',
+      click: 'ctrl.exportCsv()'
+    });
+  }
 
   // setup the editor
   onInitEditMode() {
@@ -332,8 +332,7 @@ export class DatatablePanelCtrl extends MetricsPanelCtrl {
       // Grafana >= 4.6, webpack is used, need to fix the path for imports
       if (thisPanel.baseUrl.startsWith("public")) {
         return thisPanel.baseUrl.substring(7) + '/';
-      }
-      else {
+      } else {
         // this should never happen, but just in case, append a slash to the url
         return thisPanel.baseUrl + '/';
       }
@@ -388,7 +387,7 @@ export class DatatablePanelCtrl extends MetricsPanelCtrl {
     this.table = transformDataToTable(this.dataRaw, this.panel);
     this.table.sort(this.panel.sort);
     this.panel.emptyData = this.table.rows.length === 0 ||
-                           this.table.columns.length === 0;
+      this.table.columns.length === 0;
     return super.render(this.table);
   }
 
@@ -408,7 +407,7 @@ export class DatatablePanelCtrl extends MetricsPanelCtrl {
       }
     }
     // replace px
-    tmpPanelHeight = tmpPanelHeight.replace("px","");
+    tmpPanelHeight = tmpPanelHeight.replace("px", "");
     // convert to numeric value
     var actualHeight = parseInt(tmpPanelHeight);
     return actualHeight;
@@ -497,20 +496,64 @@ export class DatatablePanelCtrl extends MetricsPanelCtrl {
   }
 
   addColumnStyle() {
-      var columnStyleDefaults = {
-        unit: 'short',
-        type: 'number',
-        decimals: 2,
-        colors: ["rgba(245, 54, 54, 0.9)", "rgba(237, 129, 40, 0.89)", "rgba(50, 172, 45, 0.97)"],
-        colorMode: null,
-        pattern: '/.*/',
-        dateFormat: 'YYYY-MM-DD HH:mm:ss',
-        thresholds: [],
-      };
-      this.panel.styles.push(angular.copy(columnStyleDefaults));
+    var columnStyleDefaults = {
+      unit: 'short',
+      type: 'number',
+      decimals: 2,
+      colors: ["rgba(245, 54, 54, 0.9)", "rgba(237, 129, 40, 0.89)", "rgba(50, 172, 45, 0.97)"],
+      colorMode: null,
+      pattern: '/.*/',
+      dateFormat: 'YYYY-MM-DD HH:mm:ss',
+      thresholds: [],
+    };
+    this.panel.styles.push(angular.copy(columnStyleDefaults));
   }
   removeColumnStyle(style) {
     this.panel.styles = _.without(this.panel.styles, style);
+  }
+
+  addColumnAlias() {
+    var defaultAlias = {
+      name: '',
+      alias: ''
+    };
+    // check if this column already exists
+    this
+      .panel
+      .columnAliases
+      .push(angular.copy(defaultAlias));
+    this.columnAliasChanged();
+  }
+
+  removeColumnAlias(column) {
+    this.panel.columnAliases = _.without(this.panel.columnAliases, column);
+    this.columnAliasChanged();
+  }
+
+  columnAliasChanged() {
+    this.render();
+  }
+
+  addColumnWidthHint() {
+    var defaultHint = {
+      name: '',
+      width: '80px'
+    };
+    // check if this column already exists
+    this
+      .panel
+      .columnWidthHints
+      .push(angular.copy(defaultHint));
+    this.columnWidthHintsChanged();
+  }
+
+  removeColumnWidthHint(column) {
+    this.panel.columnWidthHints = _.without(this.panel.columnWidthHints, column);
+    this.columnWidthsChanged();
+  }
+
+  columnWidthHintsChanged() {
+    this.render();
   }
   setUnitFormat(column, subItem) {
     column.unit = subItem.value;
