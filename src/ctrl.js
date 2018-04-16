@@ -434,6 +434,7 @@ export class DatatablePanelCtrl extends MetricsPanelCtrl {
       _this.dataLoaded = true;
     }
 
+    // set the height for renderer to use when scrolling is enabled
     ctrl.panel.panelHeight = this.getPanelHeight();
     ctrl.events.on('render', function(renderData) {
       data = renderData || data;

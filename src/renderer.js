@@ -487,7 +487,9 @@ export class DatatableRenderer {
     };
     if (this.panel.scroll) {
       tableOptions.paging = false;
-      tableOptions.scrollY = panelHeight;
+      tableOptions.scrollY = panelHeight + "px";
+      // if there isn't enough data to require scrolling, do not show the scrollbar
+      tableOptions.scrollCollapse = true;
     } else {
       tableOptions.paging = true;
       tableOptions.pagingType = this.panel.datatablePagingType;
@@ -526,7 +528,7 @@ export class DatatableRenderer {
     }
     if (!this.panel.scroll) {
       // set the page size
-      if (this.panel.rowsPerPage !== null) {
+      if ((this.panel.rowsPerPage !== null) && (this.panel.rowsPerPage > 0)) {
         newDT.page.len(this.panel.rowsPerPage).draw();
       }
     }
