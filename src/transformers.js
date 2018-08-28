@@ -156,8 +156,36 @@ transformers.table = {
     if (data[0].type !== 'table') {
       throw {message: 'Query result is not in table format, try using another transform.'};
     }
-    model.columns = data[0].columns;
-    model.rows = data[0].rows;
+
+    if (data.length === 1) {
+      model.columns = data[0].columns;
+      model.rows = data[0].rows;
+    } else {
+      // rows[0] is index
+      const extendedColumes = data
+        .map(query => query.columns)
+        .reduce((acc, cur) => {
+          return [...acc, ...cur.slice(1)];
+        });
+
+      const extendedRows = data
+        .map(query => query.rows)
+        .reduce((acc, cur) => {
+        // skip first value
+        const defaultValue = Array(cur[0].length - 1).fill(0);
+        return acc.map((row) => {
+          const found = cur.find(val => val[0] === row[0]);
+          if (found) {
+            return [...row, ...found.slice(1)];
+          } else {
+            return [...row, ...defaultValue];
+          }
+        });
+      });
+
+      model.columns = extendedColumes;
+      model.rows = extendedRows;
+    }
   }
 };
 
